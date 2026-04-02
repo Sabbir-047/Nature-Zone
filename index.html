@@ -1,16 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tailwind and daisy Ui -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
     <title>Nature Zone</title>
 </head>
+
 <body>
-    
-    <main>
-        
+    <h2 class="text-5xl text-center py-8 font bold">Choose Your Trees</h2>
+    <!-- main section -->
+    <main class="container mx-auto text-center">
+
+        <!-- Categories section -->
+        <section class="w-11/12 mx-auto py-5">
+
+        </section>
+
+        <section class="grid grid-cols-12 justify-between gap-4">
+
+            <!-- categories container -->
+            <div class="shadow-2xl p-4 rounded-4xl bg-base-100 col-span-3">
+                <h2 class="font-bold text-2xl">Categories</h2>
+                <div class="py-5 space-y-3">
+
+                    <button id="allTreesBtn" class="btn btn-success w-full">All Trees</button>
+                    <!-- all trees container -->
+                    <div id="categoriesContainer" class="space-y-3">
+                        <!-- buttons will dynamically load here -->
+                        
+                    </div>
+                </div>
+            </div>
+
+            <!-- card functionalities section -->
+            <div class="grid grid-cols-3 gap-4 col-span-6 bg-green-300 ">
+                <div>card-1</div>
+                <div>card-2</div>
+                <div>card-3</div>
+            </div>
+
+            <!-- cart section -->
+            <div class="bg-red-500 col-span-3">cart</div>
+        </section>
     </main>
 
     <script src="script.js"></script>
 </body>
+
 </html>
