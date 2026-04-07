@@ -8,9 +8,10 @@ const showSpinner = () => {
     treesContainer.innerHTML = "";
 };
 
+// 6 -> hide spinner
 const hideSpinner = () => {
     loadingSpinner.classList.add("hidden");
-}
+};
 
 // 1 -> Load Categories
 const loadCategories = async () => {
@@ -27,12 +28,38 @@ const displayCategories = async (categories) => {
     categoriesContainer.innerHTML = "";
 
     categories.forEach((category) => {
-        const btnDiv = document.createElement("div");
-        btnDiv.innerHTML = `
-            <button class="btn btn-outline w-full">${category.category_name}</button>
-        `;
+        const btnDiv = document.createElement("button");
+        btnDiv.className = "btn btn-outline w-full";
+        btnDiv.textContent = category.category_name;
+        // 7 -> select category function
+        btnDiv.onclick = () => selectCategory(category.id, btnDiv);
         categoriesContainer.appendChild(btnDiv);
     });
+};
+
+// 7 -> Select category function
+const selectCategory = async (id, btn) => {
+    // console.log(id, btn);
+    showSpinner();
+    const allBtns = document.querySelectorAll(
+        "#categoriesContainer button, #allTreesBtn",
+    );
+    // console.log(allBtns);
+    allBtns.forEach((btn) => {
+        btn.classList.remove("btn-success");
+        btn.classList.add("btn-outline");
+    });
+    btn.classList.add("btn-success");
+    btn.classList.remove("btn-outline");
+
+    // 8 -> show category wise data
+    const res = await fetch(
+        `https://openapi.programming-hero.com/api/category/${id}`,
+    );
+    const datas = await res.json();
+    console.log(datas);
+    displayTrees(datas.plants);
+    hideSpinner();
 };
 
 // 3 -> LoadTrees
@@ -49,7 +76,7 @@ const loadTrees = async () => {
 const displayTrees = async (trees) => {
     // console.log(trees);
     trees.forEach((tree) => {
-        console.log(tree);
+        // console.log(tree);
         const card = document.createElement("div");
         card.innerHTML = `
             <div class="card bg-base-100 shadow-sm">
