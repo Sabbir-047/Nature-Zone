@@ -1,4 +1,16 @@
 const categoriesContainer = document.getElementById("categoriesContainer");
+const treesContainer = document.getElementById("treesContainer");
+const loadingSpinner = document.getElementById("loadingSpinner");
+
+// 5 -> Show spinner
+const showSpinner = () => {
+    loadingSpinner.classList.remove("hidden");
+    treesContainer.innerHTML = "";
+};
+
+const hideSpinner = () => {
+    loadingSpinner.classList.add("hidden");
+}
 
 // 1 -> Load Categories
 const loadCategories = async () => {
@@ -25,32 +37,17 @@ const displayCategories = async (categories) => {
 
 // 3 -> LoadTrees
 const loadTrees = async () => {
+    showSpinner();
     const url = `https://openapi.programming-hero.com/api/plants`;
     const res = await fetch(url);
     const datas = await res.json();
+    hideSpinner();
     displayTrees(datas.plants);
 };
-
-
-/*
-
-{
-    "id": 23,
-    "image": "https://i.ibb.co.com/BKZ52h3q/black-bamboo-min.jpg",
-    "name": "Black Bamboo",
-    "description": "An exotic bamboo variety with striking black stems. Often used for ornamental purposes and furniture making.",
-    "category": "Bamboo",
-    "price": 900
-}
-
-*/
-
 
 // 4 -> Display Trees
 const displayTrees = async (trees) => {
     // console.log(trees);
-    const treesContainer = document.getElementById("treesContainer");
-
     trees.forEach((tree) => {
         console.log(tree);
         const card = document.createElement("div");
