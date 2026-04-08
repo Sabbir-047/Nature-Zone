@@ -1,6 +1,13 @@
 const categoriesContainer = document.getElementById("categoriesContainer");
 const treesContainer = document.getElementById("treesContainer");
 const loadingSpinner = document.getElementById("loadingSpinner");
+const allTrees = document.getElementById("allTreesBtn");
+const treeDetails = document.getElementById("my_modal_1");
+const modalImage = document.getElementById("modalImage");
+const modalCategory = document.getElementById("modalCategory");
+const modalDescription = document.getElementById("modalDescription");
+const modalPrice = document.getElementById("modalPrice");
+const modalTitle = document.getElementById("modalTitle");
 
 // 5 -> Show spinner
 const showSpinner = () => {
@@ -57,10 +64,26 @@ const selectCategory = async (id, btn) => {
         `https://openapi.programming-hero.com/api/category/${id}`,
     );
     const datas = await res.json();
-    console.log(datas);
+    // console.log(datas);
     displayTrees(datas.plants);
     hideSpinner();
 };
+
+// 9 -> All trees button
+allTrees.addEventListener("click", () => {
+    const allBtns = document.querySelectorAll(
+        "#categoriesContainer button, #allTreesBtn",
+    );
+    // console.log(allBtns);
+    allBtns.forEach((btn) => {
+        btn.classList.remove("btn-success");
+        btn.classList.add("btn-outline");
+    });
+    allTrees.classList.add("btn-success");
+    allTrees.classList.remove("btn-outline");
+
+    loadTrees();
+});
 
 // 3 -> LoadTrees
 const loadTrees = async () => {
@@ -84,12 +107,12 @@ const displayTrees = async (trees) => {
                     <img class = "h-48 w-full object-cover" src="${tree.image}}" alt="${tree.name}" />
                 </figure>
                 <div class="card-body">
-                    <h2 class="card-title">${tree.name}</h2>
+                    <h2 class="card-title cursor-pointer hover:text-green-500" onclick = "openTreeModal(${tree.id})">${tree.name}</h2>
                     <p class="line-clamp-2">${tree.description}</p>
                     <div class="badge badge-outline badge-success">${tree.category}</div>
 
                     <div class="card-actions justify-between items-center">
-                        <h2 class="font-bold">${tree.price} BDT</h2>
+                        <h2 class="font-bold">${tree.price} $</h2>
                         <button class="btn btn-success text-white">🛒 Cart </button>
                     </div>
                 </div>
@@ -98,6 +121,22 @@ const displayTrees = async (trees) => {
         treesContainer.appendChild(card);
     });
 };
+
+
+// 10 -> Open Tree Modal
+const openTreeModal = async(treeId) => {
+    console.log(treeId);
+    const res = await fetch(`https://openapi.programming-hero.com/api/plant/${treeId}`);
+    const datas = await res.json();
+    const plantInfos = datas.plants;
+    // console.log(plantInfos);
+    modalTitle.textContent = plantInfos.name;
+    modalImage.src = plantInfos.image;
+    modalCategory.textContent = plantInfos.category;
+    modalPrice.textContent = plantInfos.price;
+    modalDescription.textContent = plantInfos.description;
+    treeDetails.showModal();
+}
 
 loadCategories();
 loadTrees();
