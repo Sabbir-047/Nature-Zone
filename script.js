@@ -8,6 +8,8 @@ const modalCategory = document.getElementById("modalCategory");
 const modalDescription = document.getElementById("modalDescription");
 const modalPrice = document.getElementById("modalPrice");
 const modalTitle = document.getElementById("modalTitle");
+let totalPrice = document.getElementById("totalPrice");
+let cart = [];
 
 // 5 -> Show spinner
 const showSpinner = () => {
@@ -113,7 +115,7 @@ const displayTrees = async (trees) => {
 
                     <div class="card-actions justify-between items-center">
                         <h2 class="font-bold">${tree.price} $</h2>
-                        <button class="btn btn-success text-white">🛒 Cart </button>
+                        <button class="btn btn-success text-white" onclick = "addToCart(${tree.id}, '${tree.name}', ${tree.price})">🛒 Cart </button>
                     </div>
                 </div>
             </div>
@@ -122,11 +124,12 @@ const displayTrees = async (trees) => {
     });
 };
 
-
 // 10 -> Open Tree Modal
-const openTreeModal = async(treeId) => {
+const openTreeModal = async (treeId) => {
     console.log(treeId);
-    const res = await fetch(`https://openapi.programming-hero.com/api/plant/${treeId}`);
+    const res = await fetch(
+        `https://openapi.programming-hero.com/api/plant/${treeId}`,
+    );
     const datas = await res.json();
     const plantInfos = datas.plants;
     // console.log(plantInfos);
@@ -136,6 +139,64 @@ const openTreeModal = async(treeId) => {
     modalPrice.textContent = plantInfos.price;
     modalDescription.textContent = plantInfos.description;
     treeDetails.showModal();
+};
+
+// 11 -> Add to cart functionalities
+function addToCart(id, name, price) {
+    // console.log(id, name, price);
+    // checking if that product is already in the cart or not
+    const existingItem = cart.find((item) => item.id === id);
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({
+            id,
+            name,
+            price,
+            quantity: 1,
+        });
+    }
+
+    updateCart();
+}
+
+// 12 -> update cart functionalities
+function updateCart() {
+    const cartContainer = document.getElementById("cartContainer");
+    cartContainer.innerHTML = "";
+    // console.log(cart);
+
+    // 14 ->  for total price count 
+    let total = 0;
+
+    cart.forEach((item) => {
+        total += item.price * item.quantity;
+        const cartItem = document.createElement("div");
+        cartItem.className = "card card-body bg-slate-100";
+        cartItem.innerHTML = `
+        <div class="card card-body shadow-xl">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h2>${item.name}</h2>
+                    <p>${item.price} x ${item.quantity}</p>
+                </div>
+                <button class="btn btn-ghost" onclick = "removeFromCart(${item.id})">❌</button>
+            </div>
+                <p class="text-right font-semibold text-xl">${item.price * item.quantity}</p>
+        </div>
+        `;
+        cartContainer.appendChild(cartItem);
+    });
+    totalPrice.innerText = `$`+total;
+}
+
+// 13 -> Remove from cart
+function removeFromCart(treeId){
+    console.log(treeId);
+    const updatedCartElements = cart.filter(item => item.id != treeId);
+    // console.log(updatedCartElements, "updatedCartElements");
+    cart = updatedCartElements;
+    updateCart();
 }
 
 loadCategories();

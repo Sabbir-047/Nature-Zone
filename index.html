@@ -49,7 +49,31 @@
             </div>
 
             <!-- cart section -->
-            <div class="card bg-base-100 shadow-sm col-span-3">cart</div>
+            <div class="card bg-base-100 shadow-sm col-span-3">
+                <h2 class="font-bold text-3xl text-center py-2">🛒 Cart</h2>
+
+                <div class="space-y-4 px-4">
+                    <div id="cartContainer" class="space-y-4">
+                        <div class="card card-body shadow-xl">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h2>Name</h2>
+                                    <p>$2000 x 10</p>
+                                </div>
+                                <button class="btn btn-ghost">❌</button>
+                            </div>
+                            <p class="text-right font-semibold text-xl">$500</p>
+                        </div>
+                    </div>
+
+                    <!-- Total Amount -->
+                    <div class="flex justify-between items-center bg-green-500 rounded-lg p-4 my-3">
+                        <span>Total:</span>
+                        <span id="totalPrice">$0</span>
+                    </div>
+                </div>
+
+            </div>
 
 
             <!-- card details -->
