@@ -9,6 +9,7 @@ const modalDescription = document.getElementById("modalDescription");
 const modalPrice = document.getElementById("modalPrice");
 const modalTitle = document.getElementById("modalTitle");
 let totalPrice = document.getElementById("totalPrice");
+const emptyCart = document.getElementById("emptyCartMessage");
 let cart = [];
 
 // 5 -> Show spinner
@@ -103,8 +104,9 @@ const displayTrees = async (trees) => {
     trees.forEach((tree) => {
         // console.log(tree);
         const card = document.createElement("div");
+        card.className = `card bg-base-100 shadow-sm border-b-4 ${tree.price > 500 ? "border-red-500" : "border-green-500"}`
         card.innerHTML = `
-            <div class="card bg-base-100 shadow-sm">
+            <div class="">
                 <figure>
                     <img class = "h-48 w-full object-cover" src="${tree.image}}" alt="${tree.name}" />
                 </figure>
@@ -114,7 +116,7 @@ const displayTrees = async (trees) => {
                     <div class="badge badge-outline badge-success">${tree.category}</div>
 
                     <div class="card-actions justify-between items-center">
-                        <h2 class="font-bold">${tree.price} $</h2>
+                        <h2 class="font-bold ${tree.price > 500 ? "text-red-500" : "text-[#4ade80]"}">$${tree.price}</h2>
                         <button class="btn btn-success text-white" onclick = "addToCart(${tree.id}, '${tree.name}', ${tree.price})">🛒 Cart </button>
                     </div>
                 </div>
@@ -166,6 +168,14 @@ function updateCart() {
     cartContainer.innerHTML = "";
     // console.log(cart);
 
+    // 15 -> empty emptyCartMessage
+    if (cart.length === 0) {
+        emptyCart.classList.remove('hidden');
+        totalPrice.textContent = `${0}`;
+        return;
+    }
+
+    emptyCart.classList.add('hidden');
     // 14 ->  for total price count 
     let total = 0;
 
